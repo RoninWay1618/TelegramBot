@@ -3,3 +3,15 @@
 2025-04-13 17:04:22 DEBUG TelegramBot:32 - re
 2025-04-13 17:09:49 DEBUG TelegramBot:34 - good
 2025-04-13 18:17:15 DEBUG TelegramBot:34 - привет
+2025-04-13 21:38:15 DEBUG TelegramBot:34 - test
+2025-04-14 20:40:26 DEBUG UpdateProducerImpl:14 - Привет
+2025-04-14 20:41:15 DEBUG UpdateProducerImpl:14 - а сейчас
+2025-04-14 20:41:38 DEBUG UpdateProducerImpl:14 - boom
+2025-04-14 20:42:06 DEBUG UpdateProducerImpl:14 - бам
+2025-04-14 20:42:50 DEBUG UpdateProducerImpl:14 - 
+2025-04-14 20:43:04 DEBUG UpdateProducerImpl:14 - 
+2025-04-14 20:43:07 DEBUG UpdateProducerImpl:14 - 
+2025-04-14 20:52:23 DEBUG UpdateProducerImpl:14 - non
+2025-04-14 20:53:49 DEBUG UpdateProducerImpl:14 - lol
+2025-04-14 20:54:09 DEBUG UpdateProducerImpl:14 - boom
+2025-04-15 21:01:11 DEBUG UpdateProducerImpl:21 - Hello1
