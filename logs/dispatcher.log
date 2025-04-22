@@ -20,3 +20,5 @@
 2025-04-20 16:08:26 DEBUG UpdateProducerImpl:21 - Hello from Telegram 3
 2025-04-20 16:08:55 DEBUG UpdateProducerImpl:21 - Hello from Telegram 4
 2025-04-20 16:16:12 DEBUG UpdateProducerImpl:21 - Hello from Telegram 5
+2025-04-22 21:44:32 DEBUG UpdateProducerImpl:21 - Hello from Telegram 6
+2025-04-22 21:46:54 DEBUG UpdateProducerImpl:21 - Hello from Telegram 7
