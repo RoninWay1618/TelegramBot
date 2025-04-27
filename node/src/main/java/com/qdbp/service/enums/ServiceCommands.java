@@ -1,0 +1,22 @@
+package com.qdbp.service.enums;
+
+public enum ServiceCommands {
+    HELP("/help"),
+    REGISTRATION("/registration"),
+    CANCEL("/cancel"),
+    START("/start");
+    private final String cmd;
+
+    private ServiceCommands(String cmd) {
+        this.cmd = cmd;
+    }
+
+    @Override
+    public String toString() {
+        return cmd;
+    }
+
+    public boolean equals(String cmd){
+        return this.cmd.equals(cmd);
+    }
+}
