@@ -3,6 +3,7 @@ package com.qdbp.service.impl;
 import com.qdbp.dao.AppUserDAO;
 import com.qdbp.dao.RawDataDAO;
 import com.qdbp.entity.AppDocument;
+import com.qdbp.entity.AppPhoto;
 import com.qdbp.entity.AppUser;
 import com.qdbp.entity.RawData;
 import com.qdbp.entity.enums.UserState;
@@ -96,10 +97,17 @@ public class MainServiceImpl implements MainService {
             return;
         }
 
-        //TODO добавить сохренения фото
-        var answer = "Фото успешно загружено! "
-                + "Ссылка для скачивания: http://test.ru/get-photo/777";
-        sendAnswer(answer, chatId);
+        try {
+            AppPhoto photo = fileService.processPhoto(update.getMessage());
+            //TODO добавить генерацию ссылки для скачивания фото
+            var answer = "Фото успешно загружено! "
+                    + "Ссылка для скачивания: http://test.ru/get-photo/777";
+            sendAnswer(answer, chatId);
+        } catch (UploadFileException ex) {
+            log.error(ex);
+            String error = "К сожалению, загрузка фото не удалась. Повторите попытку позже.";
+            sendAnswer(error, chatId);
+        }
     }
 
     private boolean isNotAllowToSendContent(Long chatId, AppUser appUser) {
