@@ -1,5 +1,6 @@
 package com.qdbp.service.impl;
 
+import com.qdbp.service.enums.LinkType;
 import com.qdbp.dao.AppUserDAO;
 import com.qdbp.dao.RawDataDAO;
 import com.qdbp.entity.AppDocument;
@@ -11,6 +12,7 @@ import com.qdbp.exceptions.UploadFileException;
 import com.qdbp.service.FileService;
 import com.qdbp.service.MainService;
 import com.qdbp.service.ProducerService;
+import com.qdbp.service.enums.LinkType;
 import com.qdbp.service.enums.ServiceCommand;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
@@ -76,9 +78,9 @@ public class MainServiceImpl implements MainService {
 
         try {
             AppDocument doc = fileService.processDoc(update.getMessage());
-            //TODO Добавить генерацию ссылки для скачивания документа
+            String link = fileService.generateLink(doc.getId(), LinkType.GET_DOC);
             var answer = "Документ успешно загружен! "
-                    + "Ссылка для скачивания: http://test.ru/get-doc/777";
+                    + "Ссылка для скачивания: "+link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
@@ -99,9 +101,9 @@ public class MainServiceImpl implements MainService {
 
         try {
             AppPhoto photo = fileService.processPhoto(update.getMessage());
-            //TODO добавить генерацию ссылки для скачивания фото
+            String link = fileService.generateLink(photo.getId(), LinkType.GET_PHOTO);
             var answer = "Фото успешно загружено! "
-                    + "Ссылка для скачивания: http://test.ru/get-photo/777";
+                    + "Ссылка для скачивания: "+link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
