@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class NodeConfiguration {
+
     @Value("${salt}")
     private String salt;
 

@@ -5,30 +5,23 @@ import com.qdbp.dao.AppDocumentDAO;
 import com.qdbp.dao.AppPhotoDAO;
 import com.qdbp.entity.AppDocument;
 import com.qdbp.entity.AppPhoto;
-import com.qdbp.entity.BinaryContent;
 import com.qdbp.service.FileService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
 
 @Log4j
+@RequiredArgsConstructor
 @Service
 public class FileServiceImpl implements FileService {
 
 
     private final AppDocumentDAO appDocumentDAO;
-    private final AppPhotoDAO appPhotoDAO;
-    private final CryptoTool cryptoTool;
 
-    public FileServiceImpl(AppDocumentDAO appDocumentDAO, AppPhotoDAO appPhotoDAO, CryptoTool cryptoTool) {
-        this.appDocumentDAO = appDocumentDAO;
-        this.appPhotoDAO = appPhotoDAO;
-        this.cryptoTool = cryptoTool;
-    }
+    private final AppPhotoDAO appPhotoDAO;
+
+    private final CryptoTool cryptoTool;
 
     @Override
     public AppDocument getDocument(String hash) {

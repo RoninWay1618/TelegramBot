@@ -3,18 +3,16 @@ package com.qdbp.service.impl;
 import com.qdbp.dao.AppUserDAO;
 import com.qdbp.service.UserActivationService;
 import com.qdbp.utils.CryptoTool;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class UserActivationServiceImpl implements UserActivationService {
 
     private final AppUserDAO appUserDAO;
-    private final CryptoTool cryptoTool;
 
-    public UserActivationServiceImpl(AppUserDAO appUserDAO, CryptoTool cryptoTool) {
-        this.appUserDAO = appUserDAO;
-        this.cryptoTool = cryptoTool;
-    }
+    private final CryptoTool cryptoTool;
 
     @Override
     public boolean activation(String cryptoUserId) {

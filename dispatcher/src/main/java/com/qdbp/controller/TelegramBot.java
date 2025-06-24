@@ -1,9 +1,9 @@
 package com.qdbp.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,21 +13,22 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
 
-@Component
+
 @Log4j
+@RequiredArgsConstructor
+@Component
 public class TelegramBot extends TelegramWebhookBot {
 
     @Value("${bot.name}")
     private String botName;
+
     @Value("${bot.token}")
     private String botToken;
+
     @Value("${bot.uri}")
     private String botUri;
-    private UpdateProcessor updateProcessor;
 
-    public TelegramBot(UpdateProcessor updateProcessor) {
-        this.updateProcessor = updateProcessor;
-    }
+    private final UpdateProcessor updateProcessor;
 
     @PostConstruct
     public void init(){
@@ -44,11 +45,13 @@ public class TelegramBot extends TelegramWebhookBot {
 
     @Override
     public String getBotUsername() {
+
         return botName;
     }
 
     @Override
     public String getBotToken() {
+
         return botToken;
     }
 

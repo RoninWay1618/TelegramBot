@@ -7,6 +7,7 @@ public class CryptoTool {
 
     public CryptoTool(String salt) {
         var minHashLength = 10;
+
         this.hashids = new Hashids(salt, minHashLength);
     }
 
@@ -18,6 +19,7 @@ public class CryptoTool {
         long[] res = hashids.decode(value);
         if (res != null && res.length > 0) {
             return res[0];
+
         }
         return null;
     }

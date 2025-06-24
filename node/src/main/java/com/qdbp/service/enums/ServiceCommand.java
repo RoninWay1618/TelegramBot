@@ -2,6 +2,7 @@ package com.qdbp.service.enums;
 
 
 public enum ServiceCommand {
+
     HELP("/help"),
     REGISTRATION("/registration"),
     CANCEL("/cancel"),
@@ -14,10 +15,12 @@ public enum ServiceCommand {
 
     @Override
     public String toString() {
+
         return value;
     }
 
     public static ServiceCommand fromValue(String v) {
+
         for (ServiceCommand c: ServiceCommand.values()) {
             if (c.value.equals(v)) {
                 return c;

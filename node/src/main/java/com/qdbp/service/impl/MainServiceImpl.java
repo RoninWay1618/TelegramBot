@@ -8,42 +8,39 @@ import com.qdbp.entity.AppDocument;
 import com.qdbp.entity.AppPhoto;
 import com.qdbp.entity.AppUser;
 import com.qdbp.entity.RawData;
-import com.qdbp.entity.enums.UserState;
 import com.qdbp.exceptions.UploadFileException;
 import com.qdbp.service.FileService;
 import com.qdbp.service.MainService;
 import com.qdbp.service.ProducerService;
-import com.qdbp.service.enums.LinkType;
 import com.qdbp.service.enums.ServiceCommand;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 import static com.qdbp.entity.enums.UserState.BASIC_STATE;
 import static com.qdbp.entity.enums.UserState.WAIT_FOR_EMAIL_STATE;
 import static com.qdbp.service.enums.ServiceCommand.*;
 
 
-@Service
 @Log4j
+@RequiredArgsConstructor
+@Service
 public class MainServiceImpl implements MainService {
 
     private final RawDataDAO rawDataDAO;
+
     private final ProducerService producerService;
+
     private final AppUserDAO appUserDAO;
+
     private final FileService fileService;
+
     private final AppUserService appUserService;
 
-    public MainServiceImpl(RawDataDAO rawDataDAO, ProducerService producerService, AppUserDAO appUserDAO, FileService fileService, AppUserService appUserService) {
-        this.rawDataDAO = rawDataDAO;
-        this.producerService = producerService;
-        this.appUserDAO = appUserDAO;
-        this.fileService = fileService;
-        this.appUserService = appUserService;
-    }
-
+    @Transactional
     @Override
     public void processTextMessage(Update update) {
         saveRawData(update);
@@ -71,11 +68,11 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public void processDocMessage(Update update) {
+
         saveRawData(update);
         var appUser = findOrSaveAppUser(update);
         var chatId = update.getMessage().getChatId();
-
-        if(isNotAllowToSendContent(chatId, appUser)){
+        if (isNotAllowToSendContent(chatId, appUser)) {
             return;
         }
 
@@ -83,7 +80,7 @@ public class MainServiceImpl implements MainService {
             AppDocument doc = fileService.processDoc(update.getMessage());
             String link = fileService.generateLink(doc.getId(), LinkType.GET_DOC);
             var answer = "Документ успешно загружен! "
-                    + "Ссылка для скачивания: "+link;
+                    + "Ссылка для скачивания: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
@@ -97,8 +94,7 @@ public class MainServiceImpl implements MainService {
         saveRawData(update);
         var appUser = findOrSaveAppUser(update);
         var chatId = update.getMessage().getChatId();
-
-        if(isNotAllowToSendContent(chatId, appUser)){
+        if (isNotAllowToSendContent(chatId, appUser)) {
             return;
         }
 
@@ -106,7 +102,7 @@ public class MainServiceImpl implements MainService {
             AppPhoto photo = fileService.processPhoto(update.getMessage());
             String link = fileService.generateLink(photo.getId(), LinkType.GET_PHOTO);
             var answer = "Фото успешно загружено! "
-                    + "Ссылка для скачивания: "+link;
+                    + "Ссылка для скачивания: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
@@ -131,7 +127,7 @@ public class MainServiceImpl implements MainService {
     }
 
     private void sendAnswer(String output, Long chatId) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(output);
         producerService.producerAnswer(sendMessage);
@@ -141,12 +137,12 @@ public class MainServiceImpl implements MainService {
         var serviceCommand = ServiceCommand.fromValue(cmd);
         if (REGISTRATION.equals(serviceCommand)) {
             return appUserService.registerUser(appUser);
-        }  else if (HELP.equals(serviceCommand)) {
+        } else if (HELP.equals(serviceCommand)) {
             return help();
         } else if (START.equals(serviceCommand)) {
-            return "Привет! Чтобы посмотреть список доступных команд введите /help";
+            return "Приветствую! Чтобы посмотреть список доступных команд введите /help";
         } else {
-            return "Неизвестаня команда! Чтобы посмотреть спсиок доступных команд введите /help";
+            return "Неизвестная команда! Чтобы посмотреть список доступных команд введите /help";
         }
     }
 
@@ -163,9 +159,9 @@ public class MainServiceImpl implements MainService {
     }
 
     private AppUser findOrSaveAppUser(Update update) {
-        User telegramUser = update.getMessage().getFrom();
-        var optional = appUserDAO.findByTelegramUserId(telegramUser.getId());
-        if (optional.isEmpty()) {
+        var telegramUser = update.getMessage().getFrom();
+        var appUserOpt = appUserDAO.findByTelegramUserId(telegramUser.getId());
+        if (appUserOpt.isEmpty()) {
             AppUser transientAppUser = AppUser.builder()
                     .telegramUserId(telegramUser.getId())
                     .username(telegramUser.getUserName())
@@ -176,11 +172,11 @@ public class MainServiceImpl implements MainService {
                     .build();
             return appUserDAO.save(transientAppUser);
         }
-        return optional.get();
+        return appUserOpt.get();
     }
 
     private void saveRawData(Update update) {
-        RawData rawData = RawData.builder()
+        var rawData = RawData.builder()
                 .event(update)
                 .build();
         rawDataDAO.save(rawData);
